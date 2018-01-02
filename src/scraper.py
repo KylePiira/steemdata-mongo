@@ -196,11 +196,14 @@ def block_id_exists(mongo, block_id: str):
 
 
 def last_block_num(mongo) -> int:
-    return mongo.db['Blockchain'].find_one(
-        filter={},
-        projection={'_id': 0, 'block_num': 1},
-        sort=[('block_num', -1)]
-    ).get('block_id', 1)
+    try:
+        return mongo.db['Blockchain'].find_one(
+            filter={},
+            projection={'_id': 0, 'block_num': 1},
+            sort=[('block_num', -1)]
+        ).get('block_id', 1)
+    except AttributeError:
+        return 1
 
 
 # Misc
